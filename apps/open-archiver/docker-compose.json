@@ -7,8 +7,8 @@
       "isMain": true,
       "internalPort": 3000,
       "environment": [
-        { "key": "NODE_ENV", "value": "development" },
-        { "key": "DEBUG", "value": "*" },
+        { "key": "NODE_ENV", "value": "production" },
+        { "key": "HOST", "value": "0.0.0.0" },
         { "key": "PORT_FRONTEND", "value": "3000" },
         { "key": "PORT_BACKEND", "value": "4000" },
         { "key": "APP_URL", "value": "${APP_PROTOCOL}://${APP_DOMAIN}" },
@@ -20,6 +20,7 @@
         { "key": "REDIS_HOST", "value": "valkey" },
         { "key": "REDIS_PORT", "value": "6379" },
         { "key": "REDIS_PASSWORD", "value": "${REDIS_PASSWORD}" },
+        { "key": "REDIS_TLS_ENABLED", "value": "false" },
         { "key": "MEILI_HOST", "value": "http://meilisearch:7700" },
         { "key": "MEILI_MASTER_KEY", "value": "${MEILI_MASTER_KEY}" },
         { "key": "TIKA_URL", "value": "http://tika:9998" },
