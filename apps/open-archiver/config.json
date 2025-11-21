@@ -49,18 +49,18 @@
       "label": "Encryption Key (DB)",
       "env_variable": "ENCRYPTION_KEY",
       "required": true,
-      "min": 32,
+      "min": 64,
       "encoding": "hex",
-      "hint": "32-byte hex string for encrypting sensitive DB data"
+      "hint": "32-byte hex string (64 chars) for encrypting sensitive DB data"
     },
     {
       "type": "random",
       "label": "Storage Encryption Key",
       "env_variable": "STORAGE_ENCRYPTION_KEY",
       "required": true,
-      "min": 32,
+      "min": 64,
       "encoding": "hex",
-      "hint": "32-byte hex string for encrypting files at rest"
+      "hint": "32-byte hex string (64 chars) for encrypting files at rest"
     }
   ]
 }
