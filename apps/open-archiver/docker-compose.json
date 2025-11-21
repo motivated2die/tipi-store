@@ -7,7 +7,8 @@
       "isMain": true,
       "internalPort": 3000,
       "environment": [
-        { "key": "NODE_ENV", "value": "production" },
+        { "key": "NODE_ENV", "value": "development" },
+        { "key": "DEBUG", "value": "*" },
         { "key": "PORT_FRONTEND", "value": "3000" },
         { "key": "PORT_BACKEND", "value": "4000" },
         { "key": "APP_URL", "value": "${APP_PROTOCOL}://${APP_DOMAIN}" },
