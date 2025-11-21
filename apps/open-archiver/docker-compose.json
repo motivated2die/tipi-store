@@ -7,7 +7,7 @@
       "isMain": true,
       "internalPort": 3000,
       "environment": [
-        { "key": "NODE_ENV", "value": "development" },
+        { "key": "NODE_ENV", "value": "production" },
         { "key": "PORT_FRONTEND", "value": "3000" },
         { "key": "PORT_BACKEND", "value": "4000" },
         { "key": "APP_URL", "value": "${APP_PROTOCOL}://${APP_DOMAIN}" },
@@ -29,7 +29,20 @@
         { "key": "STORAGE_ENCRYPTION_KEY", "value": "${STORAGE_ENCRYPTION_KEY}" },
         { "key": "ENABLE_DELETION", "value": "true" }
       ],
-      "dependsOn": ["postgres", "valkey", "meilisearch", "tika"],
+      "dependsOn": {
+        "postgres": {
+          "condition": "service_healthy"
+        },
+        "valkey": {
+          "condition": "service_started"
+        },
+        "meilisearch": {
+          "condition": "service_started"
+        },
+        "tika": {
+          "condition": "service_started"
+        }
+      },
       "volumes": [
         {
           "hostPath": "${APP_DATA_DIR}/data/files",
@@ -51,7 +64,13 @@
           "hostPath": "${APP_DATA_DIR}/data/postgres",
           "containerPath": "/var/lib/postgresql/data"
         }
-      ]
+      ],
+      "healthCheck": {
+        "test": "pg_isready -U open_archiver_user -d open_archive",
+        "interval": "5s",
+        "timeout": "5s",
+        "retries": 10
+      }
     },
     {
       "name": "valkey",
