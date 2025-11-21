@@ -6,8 +6,10 @@
       "image": "logiclabshq/open-archiver:latest",
       "isMain": true,
       "internalPort": 3000,
+      "user": "1000:1000",
       "environment": [
         { "key": "NODE_ENV", "value": "development" },
+        { "key": "DEBUG", "value": "*" },
         { "key": "HOST", "value": "0.0.0.0" },
         { "key": "PORT_FRONTEND", "value": "3000" },
         { "key": "PORT_BACKEND", "value": "4000" },
@@ -39,7 +41,7 @@
           "condition": "service_started"
         },
         "meilisearch": {
-          "condition": "service_started"
+          "condition": "service_healthy"
         },
         "tika": {
           "condition": "service_started"
@@ -99,7 +101,13 @@
           "hostPath": "${APP_DATA_DIR}/data/meilisearch",
           "containerPath": "/meili_data"
         }
-      ]
+      ],
+      "healthCheck": {
+        "test": "curl -f http://localhost:7700/health || exit 1",
+        "interval": "5s",
+        "timeout": "5s",
+        "retries": 10
+      }
     },
     {
       "name": "tika",

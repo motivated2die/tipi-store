@@ -15,6 +15,8 @@
   "supported_architectures": ["amd64", "arm64"],
   "min_tipi_version": "4.0.0",
   "dynamic_config": true,
+  "uid": 1000,
+  "gid": 1000,
   "form_fields": [
     {
       "type": "random",
