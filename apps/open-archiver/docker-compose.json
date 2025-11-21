@@ -6,7 +6,6 @@
       "image": "logiclabshq/open-archiver:latest",
       "isMain": true,
       "internalPort": 3000,
-      "user": "1000:1000",
       "environment": [
         { "key": "NODE_ENV", "value": "development" },
         { "key": "DEBUG", "value": "*" },
