@@ -45,7 +45,8 @@
       "environment": [
         { "key": "POSTGRES_DB", "value": "open_archive" },
         { "key": "POSTGRES_USER", "value": "open_archiver_user" },
-        { "key": "POSTGRES_PASSWORD", "value": "${POSTGRES_PASSWORD}" }
+        { "key": "POSTGRES_PASSWORD", "value": "${POSTGRES_PASSWORD}" },
+        { "key": "PGDATA", "value": "/var/lib/postgresql/data/pgdata" }
       ],
       "volumes": [
         {
