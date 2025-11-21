@@ -48,7 +48,7 @@
     },
     {
       "type": "random",
-      "label": "DB Encryption Key",
+      "label": "DB Encryption Key (Hex)",
       "env_variable": "ENCRYPTION_KEY",
       "encoding": "hex",
       "min": 64,
@@ -56,7 +56,7 @@
     },
     {
       "type": "random",
-      "label": "Storage Encryption Key",
+      "label": "Storage Encryption Key (Hex)",
       "env_variable": "STORAGE_ENCRYPTION_KEY",
       "encoding": "hex",
       "min": 64,
