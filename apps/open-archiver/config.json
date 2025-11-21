@@ -11,7 +11,7 @@
   "website": "https://openarchiver.org",
   "available": true,
   "exposable": true,
-  "port": 8095,
+  "port": 8472,
   "supported_architectures": ["amd64", "arm64"],
   "dynamic_config": true,
   "form_fields": [
