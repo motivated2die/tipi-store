@@ -7,7 +7,7 @@
       "isMain": true,
       "internalPort": 3000,
       "environment": [
-        { "key": "NODE_ENV", "value": "production" },
+        { "key": "NODE_ENV", "value": "development" },
         { "key": "HOST", "value": "0.0.0.0" },
         { "key": "PORT_FRONTEND", "value": "3000" },
         { "key": "PORT_BACKEND", "value": "4000" },
