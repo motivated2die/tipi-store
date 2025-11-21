@@ -1,0 +1,65 @@
+{
+  "name": "Open Archiver",
+  "id": "open-archiver",
+  "tipi_version": 1,
+  "version": "latest",
+  "categories": ["utilities", "productivity"],
+  "description": "Open Archiver is an open-source email archiving solution that lets you archive emails from Google Workspace, Microsoft 365, and Generic IMAP servers.",
+  "short_desc": "Self-hosted email archiving solution",
+  "author": "LogicLabs",
+  "source": "https://github.com/LogicLabs-OU/OpenArchiver",
+  "website": "https://openarchiver.org",
+  "available": true,
+  "exposable": true,
+  "port": 8095,
+  "supported_architectures": ["amd64", "arm64"],
+  "dynamic_config": true,
+  "form_fields": [
+    {
+      "type": "random",
+      "label": "Postgres Password",
+      "env_variable": "POSTGRES_PASSWORD",
+      "required": true,
+      "min": 24
+    },
+    {
+      "type": "random",
+      "label": "Redis (Valkey) Password",
+      "env_variable": "REDIS_PASSWORD",
+      "required": true,
+      "min": 24
+    },
+    {
+      "type": "random",
+      "label": "Meilisearch Master Key",
+      "env_variable": "MEILI_MASTER_KEY",
+      "required": true,
+      "min": 32
+    },
+    {
+      "type": "random",
+      "label": "JWT Secret",
+      "env_variable": "JWT_SECRET",
+      "required": true,
+      "min": 64
+    },
+    {
+      "type": "random",
+      "label": "Encryption Key (DB)",
+      "env_variable": "ENCRYPTION_KEY",
+      "required": true,
+      "min": 32,
+      "encoding": "hex",
+      "hint": "32-byte hex string for encrypting sensitive DB data"
+    },
+    {
+      "type": "random",
+      "label": "Storage Encryption Key",
+      "env_variable": "STORAGE_ENCRYPTION_KEY",
+      "required": true,
+      "min": 32,
+      "encoding": "hex",
+      "hint": "32-byte hex string for encrypting files at rest"
+    }
+  ]
+}
