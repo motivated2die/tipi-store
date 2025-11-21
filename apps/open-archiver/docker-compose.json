@@ -1,6 +1,5 @@
 {
   "schemaVersion": 2,
-  "$schema": "https://schemas.runtipi.io/v2/dynamic-compose.json",
   "services": [
     {
       "name": "open-archiver",
@@ -8,7 +7,7 @@
       "isMain": true,
       "internalPort": 3000,
       "environment": [
-        { "key": "NODE_ENV", "value": "production" },
+        { "key": "NODE_ENV", "value": "development" },
         { "key": "PORT_FRONTEND", "value": "3000" },
         { "key": "PORT_BACKEND", "value": "4000" },
         { "key": "APP_URL", "value": "${APP_PROTOCOL}://${APP_DOMAIN}" },
@@ -40,13 +39,12 @@
     },
     {
       "name": "postgres",
-      "image": "postgres:17-alpine",
+      "image": "postgres:17",
       "isMain": false,
       "environment": [
         { "key": "POSTGRES_DB", "value": "open_archive" },
         { "key": "POSTGRES_USER", "value": "open_archiver_user" },
-        { "key": "POSTGRES_PASSWORD", "value": "${POSTGRES_PASSWORD}" },
-        { "key": "PGDATA", "value": "/var/lib/postgresql/data/pgdata" }
+        { "key": "POSTGRES_PASSWORD", "value": "${POSTGRES_PASSWORD}" }
       ],
       "volumes": [
         {
