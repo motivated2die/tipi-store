@@ -3,7 +3,7 @@
   "id": "open-archiver",
   "tipi_version": 1,
   "version": "latest",
-  "categories": ["utilities", "productivity"],
+  "categories": ["utilities"],
   "description": "Open Archiver is an open-source email archiving solution that lets you archive emails from Google Workspace, Microsoft 365, and Generic IMAP servers.",
   "short_desc": "Self-hosted email archiving solution",
   "author": "LogicLabs",
