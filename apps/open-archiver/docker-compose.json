@@ -104,6 +104,7 @@
     {
       "name": "postgres",
       "image": "postgres:17-alpine",
+      "isMain": false,
       "environment": [
         {
           "key": "POSTGRES_DB",
@@ -128,6 +129,7 @@
     {
       "name": "valkey",
       "image": "valkey/valkey:8-alpine",
+      "isMain": false,
       "command": ["valkey-server", "--requirepass", "${REDIS_PASSWORD}"],
       "volumes": [
         {
@@ -139,6 +141,7 @@
     {
       "name": "meilisearch",
       "image": "getmeili/meilisearch:v1.15",
+      "isMain": false,
       "environment": [
         {
           "key": "MEILI_MASTER_KEY",
@@ -158,7 +161,8 @@
     },
     {
       "name": "tika",
-      "image": "apache/tika:3.2.2.0-full"
+      "image": "apache/tika:3.2.2.0-full",
+      "isMain": false
     }
   ]
 }
