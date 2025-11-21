@@ -7,60 +7,122 @@
       "isMain": true,
       "internalPort": 3000,
       "environment": [
-        { "key": "NODE_ENV", "value": "development" },
-        { "key": "DEBUG", "value": "*" },
-        { "key": "HOST", "value": "0.0.0.0" },
-        { "key": "PORT_FRONTEND", "value": "3000" },
-        { "key": "PORT_BACKEND", "value": "4000" },
-        { "key": "APP_URL", "value": "${APP_PROTOCOL}://${APP_DOMAIN}" },
-        { "key": "ORIGIN", "value": "${APP_PROTOCOL}://${APP_DOMAIN}" },
-        { "key": "POSTGRES_DB", "value": "open_archive" },
-        { "key": "POSTGRES_USER", "value": "open_archiver_user" },
-        { "key": "POSTGRES_PASSWORD", "value": "${POSTGRES_PASSWORD}" },
-        { "key": "DATABASE_URL", "value": "postgresql://open_archiver_user:${POSTGRES_PASSWORD}@postgres:5432/open_archive" },
-        { "key": "REDIS_HOST", "value": "valkey" },
-        { "key": "REDIS_PORT", "value": "6379" },
-        { "key": "REDIS_PASSWORD", "value": "${REDIS_PASSWORD}" },
-        { "key": "REDIS_TLS_ENABLED", "value": "false" },
-        { "key": "MEILI_HOST", "value": "http://meilisearch:7700" },
-        { "key": "MEILI_MASTER_KEY", "value": "${MEILI_MASTER_KEY}" },
-        { "key": "TIKA_URL", "value": "http://tika:9998" },
-        { "key": "STORAGE_TYPE", "value": "local" },
-        { "key": "STORAGE_LOCAL_ROOT_PATH", "value": "/var/data/open-archiver" },
-        { "key": "JWT_SECRET", "value": "${JWT_SECRET}" },
-        { "key": "ENCRYPTION_KEY", "value": "${ENCRYPTION_KEY}" },
-        { "key": "STORAGE_ENCRYPTION_KEY", "value": "${STORAGE_ENCRYPTION_KEY}" },
-        { "key": "ENABLE_DELETION", "value": "true" }
+        {
+          "key": "NODE_ENV",
+          "value": "production"
+        },
+        {
+          "key": "PORT_BACKEND",
+          "value": "4000"
+        },
+        {
+          "key": "PORT_FRONTEND",
+          "value": "3000"
+        },
+        {
+          "key": "APP_URL",
+          "value": "${APP_PROTOCOL:-http}://${APP_DOMAIN}"
+        },
+        {
+          "key": "ORIGIN",
+          "value": "${APP_PROTOCOL:-http}://${APP_DOMAIN}"
+        },
+        {
+          "key": "POSTGRES_DB",
+          "value": "open_archive"
+        },
+        {
+          "key": "POSTGRES_USER",
+          "value": "open_archiver"
+        },
+        {
+          "key": "POSTGRES_PASSWORD",
+          "value": "${POSTGRES_PASSWORD}"
+        },
+        {
+          "key": "DATABASE_URL",
+          "value": "postgresql://open_archiver:${POSTGRES_PASSWORD}@postgres:5432/open_archive"
+        },
+        {
+          "key": "MEILI_MASTER_KEY",
+          "value": "${MEILI_MASTER_KEY}"
+        },
+        {
+          "key": "MEILI_HOST",
+          "value": "http://meilisearch:7700"
+        },
+        {
+          "key": "REDIS_HOST",
+          "value": "valkey"
+        },
+        {
+          "key": "REDIS_PORT",
+          "value": "6379"
+        },
+        {
+          "key": "REDIS_PASSWORD",
+          "value": "${REDIS_PASSWORD}"
+        },
+        {
+          "key": "STORAGE_TYPE",
+          "value": "local"
+        },
+        {
+          "key": "STORAGE_LOCAL_ROOT_PATH",
+          "value": "/var/data/open-archiver"
+        },
+        {
+          "key": "STORAGE_ENCRYPTION_KEY",
+          "value": "${STORAGE_ENCRYPTION_KEY}"
+        },
+        {
+          "key": "JWT_SECRET",
+          "value": "${JWT_SECRET}"
+        },
+        {
+          "key": "ENCRYPTION_KEY",
+          "value": "${ENCRYPTION_KEY}"
+        },
+        {
+          "key": "TIKA_URL",
+          "value": "http://tika:9998"
+        }
+      ],
+      "volumes": [
+        {
+          "hostPath": "${APP_DATA_DIR}/data/storage",
+          "containerPath": "/var/data/open-archiver"
+        }
       ],
       "dependsOn": {
         "postgres": {
           "condition": "service_healthy"
         },
         "valkey": {
-          "condition": "service_started"
+          "condition": "service_healthy"
         },
         "meilisearch": {
           "condition": "service_healthy"
-        },
-        "tika": {
-          "condition": "service_started"
         }
-      },
-      "volumes": [
-        {
-          "hostPath": "${APP_DATA_DIR}/data/files",
-          "containerPath": "/var/data/open-archiver"
-        }
-      ]
+      }
     },
     {
       "name": "postgres",
-      "image": "postgres:17",
+      "image": "postgres:17-alpine",
       "isMain": false,
       "environment": [
-        { "key": "POSTGRES_DB", "value": "open_archive" },
-        { "key": "POSTGRES_USER", "value": "open_archiver_user" },
-        { "key": "POSTGRES_PASSWORD", "value": "${POSTGRES_PASSWORD}" }
+        {
+          "key": "POSTGRES_DB",
+          "value": "open_archive"
+        },
+        {
+          "key": "POSTGRES_USER",
+          "value": "open_archiver"
+        },
+        {
+          "key": "POSTGRES_PASSWORD",
+          "value": "${POSTGRES_PASSWORD}"
+        }
       ],
       "volumes": [
         {
@@ -69,31 +131,43 @@
         }
       ],
       "healthCheck": {
-        "test": "pg_isready -U open_archiver_user -d open_archive",
+        "test": "pg_isready -U open_archiver -d open_archive",
         "interval": "5s",
         "timeout": "5s",
-        "retries": 10
+        "retries": 20
       }
     },
     {
       "name": "valkey",
       "image": "valkey/valkey:8-alpine",
       "isMain": false,
-      "command": ["valkey-server", "--requirepass", "${REDIS_PASSWORD}"],
+      "command": "valkey-server --requirepass ${REDIS_PASSWORD}",
       "volumes": [
         {
           "hostPath": "${APP_DATA_DIR}/data/valkey",
           "containerPath": "/data"
         }
-      ]
+      ],
+      "healthCheck": {
+        "test": "valkey-cli -a ${REDIS_PASSWORD} ping | grep PONG",
+        "interval": "5s",
+        "timeout": "5s",
+        "retries": 20
+      }
     },
     {
       "name": "meilisearch",
       "image": "getmeili/meilisearch:v1.15",
       "isMain": false,
       "environment": [
-        { "key": "MEILI_MASTER_KEY", "value": "${MEILI_MASTER_KEY}" },
-        { "key": "MEILI_ENV", "value": "production" }
+        {
+          "key": "MEILI_MASTER_KEY",
+          "value": "${MEILI_MASTER_KEY}"
+        },
+        {
+          "key": "MEILI_NO_ANALYTICS",
+          "value": "true"
+        }
       ],
       "volumes": [
         {
@@ -102,16 +176,23 @@
         }
       ],
       "healthCheck": {
-        "test": "curl -f http://localhost:7700/health || exit 1",
+        "test": "curl --fail http://localhost:7700/health || exit 1",
         "interval": "5s",
         "timeout": "5s",
-        "retries": 10
+        "retries": 20
       }
     },
     {
       "name": "tika",
       "image": "apache/tika:3.2.2.0-full",
-      "isMain": false
+      "isMain": false,
+      "deploy": {
+        "resources": {
+          "limits": {
+            "memory": "1G"
+          }
+        }
+      }
     }
   ]
 }
